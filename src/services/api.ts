@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { Alert, RootCauseAnalysis, TimelineEvent } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+// Get API URL from window config (injected at runtime) or environment (build time) or default
+const API_BASE_URL =
+  (typeof window !== 'undefined' && (window as any).REACT_APP_API_URL) ||
+  process.env.REACT_APP_API_URL ||
+  'http://localhost:3000';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
