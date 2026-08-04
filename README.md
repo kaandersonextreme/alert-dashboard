@@ -1,46 +1,127 @@
-# Getting Started with Create React App
+# Alert Correlation Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React-based dashboard for viewing alerts and analyzing their root causes using correlation analysis.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Alert List**: Browse and filter alerts by severity (critical, warning, info)
+- **Root Cause Analysis**: Identify root causes with confidence scoring and timeline visualization
+- **Widget Dashboard**: Quick overview with root causes, total alerts, severity breakdown, and top sources
+- **Interactive Filtering**: Click root cause widget to filter alerts by affected devices
+- **Impact Metrics**: View affected devices, critical alerts count, duration, and related alerts
+- **Recommended Actions**: Get suggested remediation steps for each root cause
 
-### `npm start`
+## Local Development
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js 18+
+- npm or yarn
 
-### `npm test`
+### Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+```
 
-### `npm run build`
+### Running Locally
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The app will open at `http://localhost:3000`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Environment Variables
 
-### `npm run eject`
+Create a `.env.local` file for local development:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+REACT_APP_API_URL=http://localhost:3000
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Adjust the URL to point to your Alert Correlation Engine API server.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Building for Production
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm run build
+```
 
-## Learn More
+## Deployment to Railway
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Quick Deploy with Railway CLI
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm install -g @railway/cli
+railway login
+railway link
+railway up
+```
+
+### Deploy via Railway Dashboard
+
+1. Go to [railway.app](https://railway.app)
+2. Create a new project
+3. Connect your GitHub repository
+4. Railway will auto-detect and use the Dockerfile
+5. Add environment variables:
+   - `REACT_APP_API_URL`: URL to your Alert Correlation Engine API
+6. Deploy!
+
+### Environment Variables on Railway
+
+Set these in the Railway dashboard:
+
+- **REACT_APP_API_URL**: Your API server URL
+  - Local: `http://localhost:3000`
+  - Railway: `https://your-api.railway.app`
+  - External: `http://api.yourcompany.com`
+
+### Docker Build
+
+Build and run locally with Docker:
+
+```bash
+docker build -t alert-dashboard .
+docker run -p 3000:3000 -e REACT_APP_API_URL=http://localhost:3000 alert-dashboard
+```
+
+## Architecture
+
+- **Frontend**: React 19 with TypeScript
+- **HTTP Client**: Axios with configurable API URL
+- **Icons**: Lucide React
+- **Styling**: CSS with dark theme
+- **Deployment**: Docker multi-stage build optimized for production
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── AlertsList.tsx      # Alert list with severity filtering
+│   └── RootCauseCard.tsx   # Root cause analysis display
+├── services/
+│   └── api.ts              # API client
+├── styles/
+│   ├── alerts.css
+│   └── rootcause.css
+├── types.ts                # TypeScript interfaces
+├── App.tsx                 # Main dashboard
+└── index.tsx               # Entry point
+```
+
+## API Requirements
+
+The dashboard requires the Alert Correlation Engine API with these endpoints:
+
+- `GET /api/alerts` - List all alerts
+- `POST /api/demo-data/load` - Load demo data
+- `POST /api/demo-data/clear` - Clear all data
+
+See the Alert Correlation Engine docs for full API specification.
+
+## Browser Support
+
+- Chrome, Firefox, Safari, Edge (latest versions)
